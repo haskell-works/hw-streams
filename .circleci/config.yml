@@ -175,31 +175,6 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Add GHC tools to PATH
-          command: |
-            echo "HOME=$HOME"
-            echo "BASH_ENV=$BASH_ENV"
-            echo "PATH=$PATH"
-            echo 'export PATH="$PATH:/opt/ghc/bin/"' >> $BASH_ENV
-
-      - run:
-          name: Copying scripts
-          command: |
-            mkdir -p ~/.local/bin
-            cp ./scripts/* ~/.local/bin
-
-      - deploy:
-          command: |
-            hpack
-            if [ "$CIRCLE_PROJECT_USERNAME" == "haskell-works" ]; then
-              if [[ "$CIRCLE_BRANCH" == master ]]; then
-                when tag autotag
-              elif [[ "$CIRCLE_TAG" =~ v.* ]]; then
-                publish
-              fi
-            fi
-
   release:
     docker:
       - image: quay.io/haskell_works/ghc-8.4.3
@@ -242,6 +217,15 @@ workflows:
       - lts-12
       - checked-builds:
           requires:
+            - ghc-8.6.1
+            - ghc-8.4.3
+            - ghc-8.2.2
+            - lts-12
+      - release:
+          requires:
+            - ghc-8.6.1
+            - ghc-8.4.3
+            - ghc-8.2.2
             - lts-12
           filters:
             branches:
