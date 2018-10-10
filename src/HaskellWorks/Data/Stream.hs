@@ -23,3 +23,14 @@ instance Functor (Step s) where
   fmap _ (Skip s)    = Skip s
   fmap _ Done        = Done
   {-# INLINE fmap #-}
+
+zipWiths :: (a -> b -> c) -> Stream a -> Stream b -> Stream c
+zipWiths f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing) (min na nb)
+  where step (ta, tb, Nothing) = case stepa ta of
+          Yield xa ta0 -> Skip (ta0, tb, Just xa)
+          Skip ta0     -> Skip (ta0, tb, Nothing)
+          Done         -> Done
+        step (ta, tb, Just xa) = case stepb tb of
+          Yield y tb0 -> Yield (f xa y) (ta, tb0, Nothing)
+          Skip tb0    -> Skip (ta, tb0, Just xa)
+          Done        -> Done
