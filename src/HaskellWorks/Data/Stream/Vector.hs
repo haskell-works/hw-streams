@@ -20,6 +20,7 @@ unstream (HW.Stream step initialState n) = runST $ do
             loop g v (i + 1) s'
           Skip s0 -> loop g v i s0
           Done -> DV.freeze v
+{-# INLINE [1] unstream #-}
 
 stream :: forall a. DV.Vector a -> Stream a
 stream v = Stream step 0 len
@@ -27,6 +28,12 @@ stream v = Stream step 0 len
         step i = if i >= len
           then Done
           else Yield (DV.unsafeIndex v i) (i + 1)
+{-# INLINE [1] stream #-}
 
 map :: (a -> b) -> DV.Vector a -> DV.Vector b
 map f = unstream . fmap f . stream
+{-# INLINE [1] map #-}
+
+{-# RULES
+  "stream/unstream" forall f. stream (unstream f) = f
+  #-}
