@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module HaskellWorks.Data.Stream.Storable where
+module HaskellWorks.Data.Stream.Vector.Storable where
 
 import Control.Monad.ST
 import HaskellWorks.Data.Stream
@@ -27,3 +27,6 @@ stream v = Stream step 0 len
         step i = if i >= len
           then Done
           else Yield (DVS.unsafeIndex v i) (i + 1)
+
+map :: (DVS.Storable a, DVS.Storable b) => (a -> b) -> DVS.Vector a -> DVS.Vector b
+map f = unstream . fmap f . stream
