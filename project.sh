@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 STACK_FLAGS="
---ghc-options \"-ddump-simpl\"
 "
 
 cmd="$1"
