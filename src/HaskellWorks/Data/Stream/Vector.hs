@@ -4,6 +4,7 @@ module HaskellWorks.Data.Stream.Vector where
 
 import Control.Monad.ST
 import HaskellWorks.Data.Stream
+import HaskellWorks.Data.Stream.Internal
 
 import qualified Data.Vector              as DV
 import qualified Data.Vector.Mutable      as DVM
@@ -31,8 +32,8 @@ stream v = Stream step 0 len
 {-# INLINE [1] stream #-}
 
 map :: (a -> b) -> DV.Vector a -> DV.Vector b
-map f = unstream . fmap f . stream
-{-# INLINE [1] map #-}
+map f = unstream . inplace (fmap f) . stream
+{-# INLINE map #-}
 
 {-# RULES
   "stream/unstream" forall f. stream (unstream f) = f
