@@ -34,3 +34,10 @@ zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothi
           Yield y tb0 -> Yield (f xa y) (ta, tb0, Nothing)
           Skip tb0    -> Skip (ta, tb0, Just xa)
           Done        -> Done
+
+enumFromStepN :: Num a => a -> a -> Int -> Stream a
+enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) n
+  where step (w, m) | m > 0     = Yield w (w + y, m - 1)
+                    | otherwise = Done
+        {-# INLINE [0] step #-}
+{-# INLINE [1] enumFromStepN #-}
