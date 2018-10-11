@@ -1,4 +1,5 @@
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE CPP          #-}
+{-# LANGUAGE GADTs        #-}
 
 module HaskellWorks.Data.Stream where
 
@@ -41,3 +42,11 @@ enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) n
                     | otherwise = Done
         {-# INLINE [0] step #-}
 {-# INLINE [1] enumFromStepN #-}
+
+foldl :: (a -> b -> a) -> a -> Stream b -> a
+foldl f z (Stream step s _) = loop z s
+  where loop za sa = za `seq` case step sa of
+          Yield x sb -> loop (f za x) sb
+          Skip sb    -> loop za sb
+          Done       -> z
+{-# INLINE [1] foldl #-}
