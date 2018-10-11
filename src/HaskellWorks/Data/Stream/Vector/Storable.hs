@@ -6,9 +6,12 @@ module HaskellWorks.Data.Stream.Vector.Storable
 
   , map
   , zipWith
+
+  , enumFromStepN
   ) where
 
 import Control.Monad.ST
+import Data.Vector.Storable              (Storable)
 import HaskellWorks.Data.Stream          (Step (..), Stream (..))
 import HaskellWorks.Data.Stream.Internal (inplace)
 import Prelude                           hiding (map, zipWith)
@@ -18,7 +21,7 @@ import qualified Data.Vector.Storable.Mutable as DVSM
 import qualified HaskellWorks.Data.Stream     as S
 import qualified HaskellWorks.Data.Stream     as HW
 
-unstream :: forall a. DVS.Storable a => HW.Stream a -> DVS.Vector a
+unstream :: forall a. Storable a => HW.Stream a -> DVS.Vector a
 unstream (HW.Stream step initialState n) = runST $ do
   v <- DVSM.unsafeNew n
   loop step v 0 initialState
@@ -31,7 +34,7 @@ unstream (HW.Stream step initialState n) = runST $ do
           Done -> DVS.freeze v
 {-# INLINE [1] unstream #-}
 
-stream :: forall a. DVS.Storable a => DVS.Vector a -> Stream a
+stream :: forall a. Storable a => DVS.Vector a -> Stream a
 stream v = Stream step 0 len
   where len = DVS.length v
         step i = if i >= len
@@ -39,19 +42,23 @@ stream v = Stream step 0 len
           else Yield (DVS.unsafeIndex v i) (i + 1)
 {-# INLINE [1] stream #-}
 
-map :: (DVS.Storable a, DVS.Storable b)
+map :: (Storable a, Storable b)
   => (a -> b)
   -> DVS.Vector a
   -> DVS.Vector b
 map f = unstream . inplace (fmap f) . stream
 {-# INLINE map #-}
 
-zipWith :: (DVS.Storable a, DVS.Storable b, DVS.Storable c)
+zipWith :: (Storable a, Storable b, Storable c)
   => (a -> b -> c)
   -> DVS.Vector a
   -> DVS.Vector b
   -> DVS.Vector c
 zipWith f v w = unstream (S.zipWith f (stream v) (stream w))
+
+enumFromStepN :: (Num a, Storable a) => a -> a -> Int -> DVS.Vector a
+enumFromStepN x y n = unstream (S.enumFromStepN x y n)
+{-# INLINE [1] enumFromStepN #-}
 
 {-# RULES
   "stream/unstream" forall f. stream (unstream f) = f
