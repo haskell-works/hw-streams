@@ -1,0 +1,29 @@
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+
+module HaskellWorks.Data.Stream.Vector.StorableSpec
+  ( spec
+  ) where
+
+import HaskellWorks.Hspec.Hedgehog
+import Hedgehog
+import Test.Hspec
+
+import qualified Data.Vector.Storable                     as DVS
+import qualified HaskellWorks.Data.Stream.Vector.Storable as SDVS
+import qualified Hedgehog.Gen                             as G
+import qualified Hedgehog.Range                           as R
+import qualified Test.Gen                                 as G
+
+{-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
+
+spec :: Spec
+spec = describe "HaskellWorks.Data.Stream.Vector.StorableSpec" $ do
+  it "foldl" $ requireProperty $ do
+    v <- forAll $ G.vector (R.linear 0 100) (G.word64 (R.constantBounded))
+
+    DVS.map (+ 1) v === SDVS.map (+ 1) v
+  it "foldl" $ requireProperty $ do
+    v <- forAll $ G.vector (R.linear 0 100) (G.word64 (R.constantBounded))
+
+    DVS.foldl (+) 0 v === SDVS.foldl (+) 0 v
