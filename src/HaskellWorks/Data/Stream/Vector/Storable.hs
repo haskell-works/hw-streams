@@ -8,13 +8,14 @@ module HaskellWorks.Data.Stream.Vector.Storable
   , zipWith
 
   , enumFromStepN
+  , foldl
   ) where
 
 import Control.Monad.ST
 import Data.Vector.Storable              (Storable)
 import HaskellWorks.Data.Stream          (Step (..), Stream (..))
 import HaskellWorks.Data.Stream.Internal (inplace)
-import Prelude                           hiding (map, zipWith)
+import Prelude                           hiding (foldl, map, zipWith)
 
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
@@ -57,8 +58,12 @@ zipWith :: (Storable a, Storable b, Storable c)
 zipWith f v w = unstream (S.zipWith f (stream v) (stream w))
 
 enumFromStepN :: (Num a, Storable a) => a -> a -> Int -> DVS.Vector a
-enumFromStepN x y n = unstream (S.enumFromStepN x y n)
+enumFromStepN x y = unstream . inplace (S.enumFromStepN x y)
 {-# INLINE [1] enumFromStepN #-}
+
+foldl :: Storable b => (a -> b -> a) -> a -> DVS.Vector b -> a
+foldl f z = inplace (S.foldl f z) . stream
+{-# INLINE [1] foldl #-}
 
 {-# RULES
   "stream/unstream" forall f. stream (unstream f) = f
