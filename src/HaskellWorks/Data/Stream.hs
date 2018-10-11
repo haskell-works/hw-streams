@@ -1,5 +1,5 @@
-{-# LANGUAGE CPP          #-}
-{-# LANGUAGE GADTs        #-}
+{-# LANGUAGE CPP   #-}
+{-# LANGUAGE GADTs #-}
 
 module HaskellWorks.Data.Stream where
 
@@ -48,5 +48,5 @@ foldl f z (Stream step s _) = loop z s
   where loop za sa = za `seq` case step sa of
           Yield x sb -> loop (f za x) sb
           Skip sb    -> loop za sb
-          Done       -> z
+          Done       -> za
 {-# INLINE [1] foldl #-}
