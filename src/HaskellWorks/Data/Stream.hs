@@ -3,6 +3,8 @@
 
 module HaskellWorks.Data.Stream where
 
+import Prelude hiding (zipWith)
+
 data Stream a where
   Stream :: ()
     => (s -> Step s a)
@@ -35,6 +37,8 @@ zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothi
           Yield y tb0 -> Yield (f xa y) (ta, tb0, Nothing)
           Skip tb0    -> Skip (ta, tb0, Just xa)
           Done        -> Done
+        {-# INLINE [0] step #-}
+{-# INLINE [1] zipWith #-}
 
 enumFromStepN :: Num a => a -> a -> Int -> Stream a
 enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) n
@@ -50,3 +54,6 @@ foldl f z (Stream step s _) = loop z s
           Skip sb    -> loop za sb
           Done       -> za
 {-# INLINE [1] foldl #-}
+
+{-# RULES
+  "zipWith xs xs [Vector.Stream]" forall f xs. zipWith f xs xs = fmap (\x -> f x x) xs   #-}

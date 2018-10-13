@@ -71,7 +71,7 @@ foldl f z = inplace (S.foldl f z) . stream
 sum :: (Storable a, Num a) => DVS.Vector a -> a
 sum = foldl (+) 0
 
-dotp :: DVS.Vector Double -> DVS.Vector Double -> Double
+dotp :: (Storable a, Num a) => DVS.Vector a -> DVS.Vector a -> a
 dotp v w = sum (zipWith (*) v w)
 
 {-# RULES
