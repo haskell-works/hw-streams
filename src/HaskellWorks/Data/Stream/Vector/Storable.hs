@@ -9,13 +9,16 @@ module HaskellWorks.Data.Stream.Vector.Storable
 
   , enumFromStepN
   , foldl
+
+  , dotp
+  , sum
   ) where
 
 import Control.Monad.ST
 import Data.Vector.Storable              (Storable)
 import HaskellWorks.Data.Stream          (Step (..), Stream (..))
 import HaskellWorks.Data.Stream.Internal (inplace)
-import Prelude                           hiding (foldl, map, zipWith)
+import Prelude                           hiding (foldl, map, sum, zipWith)
 
 import qualified Data.Vector.Storable         as DVS
 import qualified Data.Vector.Storable.Mutable as DVSM
@@ -64,6 +67,12 @@ enumFromStepN x y = unstream . inplace (S.enumFromStepN x y)
 foldl :: Storable b => (a -> b -> a) -> a -> DVS.Vector b -> a
 foldl f z = inplace (S.foldl f z) . stream
 {-# INLINE [1] foldl #-}
+
+sum :: (Storable a, Num a) => DVS.Vector a -> a
+sum = foldl (+) 0
+
+dotp :: DVS.Vector Double -> DVS.Vector Double -> Double
+dotp v w = sum (zipWith (*) v w)
 
 {-# RULES
   "stream/unstream" forall f. stream (unstream f) = f

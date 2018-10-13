@@ -19,7 +19,7 @@ import qualified Test.Gen                                 as G
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.Stream.Vector.StorableSpec" $ do
-  it "foldl" $ requireProperty $ do
+  it "map" $ requireProperty $ do
     v <- forAll $ G.vector (R.linear 0 100) (G.word64 (R.constantBounded))
 
     DVS.map (+ 1) v === SDVS.map (+ 1) v
@@ -27,3 +27,7 @@ spec = describe "HaskellWorks.Data.Stream.Vector.StorableSpec" $ do
     v <- forAll $ G.vector (R.linear 0 100) (G.word64 (R.constantBounded))
 
     DVS.foldl (+) 0 v === SDVS.foldl (+) 0 v
+  it "sum" $ requireProperty $ do
+    v <- forAll $ G.vector (R.linear 0 100) (G.word64 (R.constantBounded))
+
+    DVS.sum v === SDVS.sum v
