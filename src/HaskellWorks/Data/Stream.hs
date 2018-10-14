@@ -56,4 +56,5 @@ foldl f z (Stream step s _) = loop z s
 {-# INLINE [1] foldl #-}
 
 {-# RULES
-  "zipWith xs xs [Vector.Stream]" forall f xs. zipWith f xs xs = fmap (\x -> f x x) xs   #-}
+"zipWith xs xs [Vector.Stream]" forall f xs.
+  zipWith f xs xs = fmap (\x -> f x x) xs   #-}

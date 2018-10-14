@@ -18,16 +18,25 @@ mkReplicateVector = do
   let !v = DVS.replicate 100000 (0 :: Word64)
   return v
 
-mkEnumVector :: IO (DVS.Vector Word64)
-mkEnumVector = do
+mkEnumVectorS :: IO (DVS.Vector Word64)
+mkEnumVectorS = do
   let !v = SDVS.enumFromStepN 0 1 100000
   return v
 
-mkEnumVector2 :: IO (DVS.Vector Word64, DVS.Vector Word64)
-mkEnumVector2 = do
+mkEnumVectorU :: IO (DVS.Vector Word64)
+mkEnumVectorU = do
+  let !v = DVS.enumFromStepN 0 1 100000
+  return v
+
+mkEnumVector2S :: IO (DVS.Vector Word64, DVS.Vector Word64)
+mkEnumVector2S = do
   let !v = SDVS.enumFromStepN 0 1 100000
-  let !w = SDVS.enumFromStepN 0 1 100000
-  return (v, w)
+  return (v, v)
+
+mkEnumVector2U :: IO (DVS.Vector Word64, DVS.Vector Word64)
+mkEnumVector2U = do
+  let !v = DVS.enumFromStepN 0 1 100000
+  return (v, v)
 
 sumall :: DVS.Vector Word64 -> Word64
 sumall = S.foldl (+) 123 . SDVS.stream . SDVS.map (+1) . SDVS.map (+1) . SDVS.map (+1)
@@ -45,16 +54,19 @@ benchThings = join $
       , bench "DVS.mapUnfused"  (whnf runMapUnfused       v)
       ]
     ]
-  , [ env mkEnumVector $ \v -> bgroup "mkEnumVector"
+  , [ env mkEnumVectorS $ \v -> bgroup "mkEnumVector"
       [ bench "DVS.map"         (whnf runMap              v)
       , bench "DVS.mapUnfused"  (whnf runMapUnfused       v)
       , bench "DVS.sumall"      (whnf sumall              v)
       , bench "DVS.foldl"       (whnf (SDVS.foldl (+) 0)  v)
       ]
     ]
-  , [ env mkEnumVector2 $ \ ~(v, w) -> bgroup "mkEnumVector2"
-      [ bench "SDVS.dotp"        (whnf (SDVS.dotp v)       w)
-      , bench "DVS.dotp"         (whnf (DVS.dotp v)       w)
+  , [ env mkEnumVectorS $ \v -> bgroup "mkEnumVectorS"
+      [ bench "SDVS.dotp"       (whnf (SDVS.dotp v . SDVS.map (+1234))       v)
+      ]
+    ]
+  , [ env mkEnumVectorU $ \v -> bgroup "mkEnumVectorU"
+      [ bench "DVS.dotp"         (whnf (DVS.dotp  v . DVS.map (+2345))      v)
       ]
     ]
   ]

@@ -59,6 +59,7 @@ zipWith :: (Storable a, Storable b, Storable c)
   -> DVS.Vector b
   -> DVS.Vector c
 zipWith f v w = unstream (S.zipWith f (stream v) (stream w))
+{-# INLINE [1] zipWith #-}
 
 enumFromStepN :: (Num a, Storable a) => a -> a -> Int -> DVS.Vector a
 enumFromStepN x y = unstream . inplace (S.enumFromStepN x y)
@@ -77,3 +78,6 @@ dotp v w = sum (zipWith (*) v w)
 {-# RULES
   "stream/unstream" forall f. stream (unstream f) = f
   #-}
+
+{-# RULES
+  "zipWith xs xs [Vector.Stream]" forall f xs. zipWith f xs xs = map (\x -> f x x) xs   #-}
