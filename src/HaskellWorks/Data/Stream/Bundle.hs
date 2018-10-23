@@ -2,7 +2,7 @@ module HaskellWorks.Data.Stream.Bundle where
 
 import HaskellWorks.Data.Stream.Chunk (Chunk)
 
-import qualified HaskellWorks.Data.Stream as S
+import qualified HaskellWorks.Data.Stream.Stream as S
 
 type Size = Int
 

@@ -9,7 +9,7 @@ import Data.Word
 
 import qualified Baseline.Data.Stream.Vector.Storable     as USDVS
 import qualified Data.Vector.Storable                     as DVS
-import qualified HaskellWorks.Data.Stream                 as S
+import qualified HaskellWorks.Data.Stream.Stream          as S
 import qualified HaskellWorks.Data.Stream.Vector.Storable as SDVS
 import qualified Reference.Data.Stream.Vector.Storable    as DVS
 

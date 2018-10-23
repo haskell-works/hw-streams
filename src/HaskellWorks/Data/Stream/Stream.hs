@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP   #-}
 {-# LANGUAGE GADTs #-}
 
-module HaskellWorks.Data.Stream where
+module HaskellWorks.Data.Stream.Stream where
 
 import Prelude hiding (zipWith)
 

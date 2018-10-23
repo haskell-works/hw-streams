@@ -3,12 +3,12 @@
 module HaskellWorks.Data.Stream.Vector where
 
 import Control.Monad.ST
-import HaskellWorks.Data.Stream
 import HaskellWorks.Data.Stream.Internal
+import HaskellWorks.Data.Stream.Stream
 
-import qualified Data.Vector              as DV
-import qualified Data.Vector.Mutable      as DVM
-import qualified HaskellWorks.Data.Stream as HW
+import qualified Data.Vector                     as DV
+import qualified Data.Vector.Mutable             as DVM
+import qualified HaskellWorks.Data.Stream.Stream as HW
 
 unstream :: forall a. HW.Stream a -> DV.Vector a
 unstream (HW.Stream step initialState n) = runST $ do
