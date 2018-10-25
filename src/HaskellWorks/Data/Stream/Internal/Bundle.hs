@@ -1,4 +1,4 @@
-module HaskellWorks.Data.Stream.Bundle where
+module HaskellWorks.Data.Stream.Internal.Bundle where
 
 import HaskellWorks.Data.Stream.Chunk (Chunk)
 
