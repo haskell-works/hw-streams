@@ -1,4 +1,4 @@
-module Reference.Data.Stream.Vector.Storable where
+module Reference.Data.Streams.Vector.Storable where
 
 import Data.Vector.Storable (Storable)
 

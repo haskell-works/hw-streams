@@ -1,6 +1,6 @@
 {-# LANGUAGE RankNTypes #-}
 
-module HaskellWorks.Data.Stream.Chunk where
+module HaskellWorks.Data.Streams.Chunk where
 
 import Control.Monad.Primitive
 

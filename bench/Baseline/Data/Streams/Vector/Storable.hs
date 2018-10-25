@@ -1,7 +1,7 @@
-module Baseline.Data.Stream.Vector.Storable where
+module Baseline.Data.Streams.Vector.Storable where
 
-import qualified Data.Vector.Storable                     as DVS
-import qualified HaskellWorks.Data.Stream.Vector.Storable as DVS
+import qualified Data.Vector.Storable                      as DVS
+import qualified HaskellWorks.Data.Streams.Vector.Storable as DVS
 
 -- | Version of map that does not do fusion
 map :: (DVS.Storable a, DVS.Storable b) => (a -> b) -> DVS.Vector a -> DVS.Vector b

@@ -9,11 +9,11 @@ import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
 import Test.Hspec
 
-import qualified Data.Vector.Storable                     as DVS
-import qualified HaskellWorks.Data.Stream.Vector.Storable as SDVS
-import qualified Hedgehog.Gen                             as G
-import qualified Hedgehog.Range                           as R
-import qualified Test.Gen                                 as G
+import qualified Data.Vector.Storable                      as DVS
+import qualified HaskellWorks.Data.Streams.Vector.Storable as SDVS
+import qualified Hedgehog.Gen                              as G
+import qualified Hedgehog.Range                            as R
+import qualified Test.Gen                                  as G
 
 {-# ANN module ("HLint: Ignore Redundant do" :: String) #-}
 

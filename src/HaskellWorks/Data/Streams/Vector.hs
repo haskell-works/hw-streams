@@ -1,14 +1,14 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module HaskellWorks.Data.Stream.Vector where
+module HaskellWorks.Data.Streams.Vector where
 
 import Control.Monad.ST
-import HaskellWorks.Data.Stream.Internal
-import HaskellWorks.Data.Stream.Stream
+import HaskellWorks.Data.Streams.Internal
+import HaskellWorks.Data.Streams.Stream
 
-import qualified Data.Vector                     as DV
-import qualified Data.Vector.Mutable             as DVM
-import qualified HaskellWorks.Data.Stream.Stream as HW
+import qualified Data.Vector                      as DV
+import qualified Data.Vector.Mutable              as DVM
+import qualified HaskellWorks.Data.Streams.Stream as HW
 
 unstream :: forall a. HW.Stream a -> DV.Vector a
 unstream (HW.Stream step initialState n) = runST $ do

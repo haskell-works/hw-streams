@@ -1,4 +1,4 @@
-module HaskellWorks.Data.Stream.Internal where
+module HaskellWorks.Data.Streams.Internal where
 
 inplace :: a -> a
 inplace = id

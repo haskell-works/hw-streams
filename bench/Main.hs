@@ -7,11 +7,11 @@ import Control.Monad  (join)
 import Criterion.Main
 import Data.Word
 
-import qualified Baseline.Data.Stream.Vector.Storable     as USDVS
-import qualified Data.Vector.Storable                     as DVS
-import qualified HaskellWorks.Data.Stream.Stream          as S
-import qualified HaskellWorks.Data.Stream.Vector.Storable as SDVS
-import qualified Reference.Data.Stream.Vector.Storable    as DVS
+import qualified Baseline.Data.Streams.Vector.Storable     as USDVS
+import qualified Data.Vector.Storable                      as DVS
+import qualified HaskellWorks.Data.Streams.Stream          as S
+import qualified HaskellWorks.Data.Streams.Vector.Storable as SDVS
+import qualified Reference.Data.Streams.Vector.Storable    as DVS
 
 mkReplicateVector :: IO (DVS.Vector Word64)
 mkReplicateVector = do

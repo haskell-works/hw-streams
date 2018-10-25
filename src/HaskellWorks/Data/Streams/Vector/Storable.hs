@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module HaskellWorks.Data.Stream.Vector.Storable
+module HaskellWorks.Data.Streams.Vector.Storable
   ( stream
   , unstream
 
@@ -15,14 +15,14 @@ module HaskellWorks.Data.Stream.Vector.Storable
   ) where
 
 import Control.Monad.ST
-import Data.Vector.Storable              (Storable)
-import HaskellWorks.Data.Stream.Internal (inplace)
-import HaskellWorks.Data.Stream.Stream   (Step (..), Stream (..))
-import Prelude                           hiding (foldl, map, sum, zipWith)
+import Data.Vector.Storable               (Storable)
+import HaskellWorks.Data.Streams.Internal (inplace)
+import HaskellWorks.Data.Streams.Stream   (Step (..), Stream (..))
+import Prelude                            hiding (foldl, map, sum, zipWith)
 
-import qualified Data.Vector.Storable            as DVS
-import qualified Data.Vector.Storable.Mutable    as DVSM
-import qualified HaskellWorks.Data.Stream.Stream as S
+import qualified Data.Vector.Storable             as DVS
+import qualified Data.Vector.Storable.Mutable     as DVSM
+import qualified HaskellWorks.Data.Streams.Stream as S
 
 unstream :: forall a. Storable a => S.Stream a -> DVS.Vector a
 unstream (S.Stream step initialState n) = runST $ do
