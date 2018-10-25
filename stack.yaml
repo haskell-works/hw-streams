@@ -1,4 +1,4 @@
-resolver: lts-12.10
+resolver: lts-12.14
 
 packages:
 - '.'
@@ -6,3 +6,6 @@ packages:
 flags: {}
 
 extra-package-dbs: []
+
+extra-deps:
+- hw-bits-0.7.0.3

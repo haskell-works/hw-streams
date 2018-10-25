@@ -40,6 +40,19 @@ zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothi
         {-# INLINE [0] step #-}
 {-# INLINE [1] zipWith #-}
 
+zipWithState :: (a -> b -> s -> (c, s)) -> s -> Stream a -> Stream b -> Stream c
+zipWithState f state (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing, state) (min na nb)
+  where step (ta, tb, Nothing, state) = case stepa ta of
+          Yield xa ta0 -> Skip (ta0, tb, Just xa, state)
+          Skip ta0     -> Skip (ta0, tb, Nothing, state)
+          Done         -> Done
+        step (ta, tb, Just xa, state) = case stepb tb of
+          Yield y tb0 -> let (newValue, newState) = f xa y state in Yield newValue (ta, tb0, Nothing, newState)
+          Skip tb0    -> Skip (ta, tb0, Just xa, state)
+          Done        -> Done
+        {-# INLINE [0] step #-}
+{-# INLINE [1] zipWithState #-}
+
 enumFromStepN :: Num a => a -> a -> Int -> Stream a
 enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) n
   where step (w, m) | m > 0     = Yield w (w + y, m - 1)
