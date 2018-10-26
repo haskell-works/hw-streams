@@ -96,3 +96,7 @@ append (Stream stepa ta na) (Stream stepb tb nb) = Stream step (Left ta) (na + n
 
 singleton :: a -> Stream a
 singleton a = Stream (bool Done (Yield a False)) True 1
+
+repeat :: Int -> a -> Stream a
+repeat n a = Stream step n 1
+  where step i = if i > 0 then Yield a (i - 1) else Done

@@ -30,9 +30,12 @@ bitwiseXor :: Stream Word64 -> Stream Word64 -> Stream Word64
 bitwiseXor = HW.zipWith (.^.)
 
 bitwiseShiftDown :: Count -> Stream Word64 -> Stream Word64
-bitwiseShiftDown n as = HW.zipWith splice as (HW.drop 1 as `append` HW.singleton 0)
-  where splice :: Word64 -> Word64 -> Word64
-        splice a b = (a .>. n) .|. (b .<. (64 - n))
+bitwiseShiftDown n as = HW.zipWith splice bs (HW.drop 1 bs `append` HW.singleton 0)
+  where bs = HW.drop i as `append` HW.repeat i 0
+        o = n `mod` 64
+        i = fromIntegral (n `div` 64)
+        splice :: Word64 -> Word64 -> Word64
+        splice a b = (a .>. o) .|. (b .<. (64 - o))
 
 add :: Stream Word64 -> Stream Word64 -> Stream Word64
 add = HW.zipWithState (\a b c -> let d = a + b in (c + d, d `ltWord` a)) 0
