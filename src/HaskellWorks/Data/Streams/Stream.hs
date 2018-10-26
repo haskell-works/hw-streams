@@ -4,6 +4,7 @@
 module HaskellWorks.Data.Streams.Stream where
 
 import Data.Bool
+import HaskellWorks.Data.Streams.Size
 
 import Prelude hiding (drop, zipWith)
 
@@ -11,7 +12,7 @@ data Stream a where
   Stream :: ()
     => (s -> Step s a)
     -> s
-    -> Int
+    -> Size
     -> Stream a
 
 instance Functor Stream where
@@ -30,7 +31,7 @@ instance Functor (Step s) where
   {-# INLINE fmap #-}
 
 zipWith :: (a -> b -> c) -> Stream a -> Stream b -> Stream c
-zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing) (min na nb)
+zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing) (smaller na nb)
   where step (ta, tb, Nothing) = case stepa ta of
           Yield xa ta0 -> Skip (ta0, tb, Just xa)
           Skip ta0     -> Skip (ta0, tb, Nothing)
@@ -43,7 +44,7 @@ zipWith f (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothi
 {-# INLINE [1] zipWith #-}
 
 zipWithState :: (a -> b -> s -> (c, s)) -> s -> Stream a -> Stream b -> Stream c
-zipWithState f state (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing, state) (min na nb)
+zipWithState f state (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa, sb, Nothing, state) (smaller na nb)
   where step (ta, tb, Nothing, oldState) = case stepa ta of
           Yield xa ta0 -> Skip (ta0, tb, Just xa, oldState)
           Skip ta0     -> Skip (ta0, tb, Nothing, oldState)
@@ -56,7 +57,7 @@ zipWithState f state (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa
 {-# INLINE [1] zipWithState #-}
 
 enumFromStepN :: Num a => a -> a -> Int -> Stream a
-enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) n
+enumFromStepN x y n = x `seq` y `seq` n `seq` Stream step (x, n) (Exact n)
   where step (w, m) | m > 0     = Yield w (w + y, m - 1)
                     | otherwise = Done
         {-# INLINE [0] step #-}
