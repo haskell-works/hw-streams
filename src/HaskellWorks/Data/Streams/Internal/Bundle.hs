@@ -1,6 +1,6 @@
 module HaskellWorks.Data.Streams.Internal.Bundle where
 
-import HaskellWorks.Data.Streams.Chunk (Chunk)
+import HaskellWorks.Data.Streams.Internal.Chunk (Chunk)
 
 import qualified HaskellWorks.Data.Streams.Stream as S
 
