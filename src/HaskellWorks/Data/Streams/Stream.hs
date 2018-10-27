@@ -102,10 +102,10 @@ repeat :: Int -> a -> Stream a
 repeat n a = Stream step n 1
   where step i = if i > 0 then Yield a (i - 1) else Done
 
-transcribe :: (s -> a -> b) -> s -> Stream a -> Stream b
+transcribe :: (s -> a -> (b, s)) -> s -> Stream a -> Stream b
 transcribe f w (Stream step state size) = Stream step' (state, w) size
   where step' (t, x) = case step t of
-          Yield a s' -> let z = f x a in Yield z (s', x)
+          Yield a s' -> let (z, y) = f x a in Yield z (s', y)
           Skip    s' -> Skip (s', x)
           Done       -> Done
         {-# INLINE step' #-}
