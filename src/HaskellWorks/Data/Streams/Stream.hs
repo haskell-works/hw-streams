@@ -122,3 +122,4 @@ concatMap f (Stream stepA stateA _) = Stream stepC (stateA, Nothing) Unknown
           Yield b stateB1 -> Yield b  (stateA0, Just (Stream stepB stateB1 Unknown))
           Skip    stateB1 -> Skip     (stateA0, Just (Stream stepB stateB1 Unknown))
           Done            -> Skip     (stateA0, Nothing)
+{-# INLINE concatMap #-}
