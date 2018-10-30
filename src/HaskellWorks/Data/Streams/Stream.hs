@@ -1,6 +1,7 @@
-{-# LANGUAGE CPP        #-}
-{-# LANGUAGE GADTs      #-}
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE CPP                 #-}
+{-# LANGUAGE GADTs               #-}
+{-# LANGUAGE RankNTypes          #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module HaskellWorks.Data.Streams.Stream where
 
@@ -123,3 +124,14 @@ concatMap f (Stream stepA stateA _) = Stream stepC (stateA, Nothing) Unknown
           Skip    stateB1 -> Skip     (stateA0, Just (Stream stepB stateB1 Unknown))
           Done            -> Skip     (stateA0, Nothing)
 {-# INLINE concatMap #-}
+
+dupMap :: forall a b. (a -> b) -> (a -> b) -> Stream a -> Stream b
+dupMap f g (Stream stepA stateA _) = Stream (mkStepB stepA) (stateA, Nothing) Unknown
+  where mkStepB :: (s -> Step s a) -> (s, Maybe b) -> Step (s, Maybe b) b
+        mkStepB step (s, mw) = case mw of
+          Nothing -> case step s of
+            Yield a t -> Yield (f a) (t, Just (g a))
+            Skip t    -> Skip (t, Nothing)
+            Done      -> Done
+          Just w -> Yield w (s, Nothing)
+{-# INLINE dupMap #-}
