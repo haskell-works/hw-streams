@@ -1,5 +1,6 @@
-{-# LANGUAGE CPP   #-}
-{-# LANGUAGE GADTs #-}
+{-# LANGUAGE CPP        #-}
+{-# LANGUAGE GADTs      #-}
+{-# LANGUAGE RankNTypes #-}
 
 module HaskellWorks.Data.Streams.Stream where
 
@@ -110,3 +111,14 @@ transcribe f w (Stream step state size) = Stream step' (state, w) size
           Done       -> Done
         {-# INLINE step' #-}
 {-# INLINE transcribe #-}
+
+concatMap :: (a -> Stream b) -> Stream a -> Stream b
+concatMap f (Stream stepA stateA _) = Stream stepC (stateA, Nothing) Unknown
+  where stepC (stateA0, Nothing) = case stepA stateA0 of
+          Yield a stateA1 -> Skip (stateA1, Just (f a))
+          Skip    stateA1 -> Skip (stateA1, Nothing)
+          Done            -> Done
+        stepC (stateA0, Just (Stream stepB stateB _)) = case stepB stateB of
+          Yield b stateB1 -> Yield b  (stateA0, Just (Stream stepB stateB1 Unknown))
+          Skip    stateB1 -> Skip     (stateA0, Just (Stream stepB stateB1 Unknown))
+          Done            -> Skip     (stateA0, Nothing)
