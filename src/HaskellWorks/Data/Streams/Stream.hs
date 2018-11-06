@@ -52,7 +52,7 @@ zipWithState f state (Stream stepa sa na) (Stream stepb sb nb) = Stream step (sa
           Skip ta0     -> Skip (ta0, tb, Nothing, oldState)
           Done         -> Done
         step (ta, tb, Just xa, oldState) = case stepb tb of
-          Yield y tb0 -> let (newValue, newState) = f xa y state in Yield newValue (ta, tb0, Nothing, newState)
+          Yield y tb0 -> let (newValue, newState) = f xa y oldState in Yield newValue (ta, tb0, Nothing, newState)
           Skip tb0    -> Skip (ta, tb0, Just xa, oldState)
           Done        -> Done
         {-# INLINE [0] step #-}
@@ -135,3 +135,4 @@ dupMap f g (Stream stepA stateA _) = Stream (mkStepB stepA) (stateA, Nothing) Un
             Done      -> Done
           Just w -> Yield w (s, Nothing)
 {-# INLINE dupMap #-}
+
