@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module HaskellWorks.Data.Stream.Vector.StorableSpec
+module HaskellWorks.Data.Streams.Vector.StorableSpec
   ( spec
   ) where
 

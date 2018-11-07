@@ -1,9 +1,7 @@
 module Test.Gen where
 
-import Data.Vector.Storable        (Storable)
-import HaskellWorks.Hspec.Hedgehog
+import Data.Vector.Storable (Storable)
 import Hedgehog
-import Test.Hspec
 
 import qualified Data.Vector.Storable as DVS
 import qualified Hedgehog.Gen         as G
