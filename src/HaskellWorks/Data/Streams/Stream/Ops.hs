@@ -38,4 +38,7 @@ bitwiseShiftDown n as = HW.zipWith splice bs (HW.drop 1 bs `append` HW.singleton
         splice a b = (a .>. o) .|. (b .<. (64 - o))
 
 add :: Stream Word64 -> Stream Word64 -> Stream Word64
-add = HW.zipWithState (\a b c -> let d = a + b in (c + d, d `ltWord` a)) 0
+add = HW.zipWithState (\a b c ->
+    let d = a + b + c     in
+    let e = d `ltWord` a  in
+    (d, e)) 0
