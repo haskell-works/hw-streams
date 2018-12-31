@@ -136,3 +136,8 @@ dupMap f g (Stream stepA stateA _) = Stream (mkStepB stepA) (stateA, Nothing) Un
           Just w -> Yield w (s, Nothing)
 {-# INLINE dupMap #-}
 
+fromList :: [a] -> Stream a
+fromList as = Stream step as Unknown
+  where step []     = Done
+        step (b:bs) = Yield b bs
+{-# INLINE [1] fromList #-}
