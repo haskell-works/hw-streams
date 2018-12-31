@@ -1,11 +1,5 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
---
--- see: https://github.com/sol/hpack
---
--- hash: 01d7ada94ba278fde2a88d0d83bc29349db4f99f216718e1b57cea00572ab18e
-
 name:           hw-streams
 version:        0.0.0.8
 synopsis:       Primitive functions and data types
