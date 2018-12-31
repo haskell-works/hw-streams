@@ -6,9 +6,10 @@
 module HaskellWorks.Data.Streams.Stream where
 
 import Data.Bool
+import Data.Monoid                    ((<>))
 import HaskellWorks.Data.Streams.Size
 
-import Prelude hiding (drop, zipWith)
+import Prelude hiding (drop, foldl, zipWith)
 
 data Stream a where
   Stream :: ()
@@ -141,3 +142,7 @@ fromList as = Stream step as Unknown
   where step []     = Done
         step (b:bs) = Yield b bs
 {-# INLINE [1] fromList #-}
+
+foldMap :: Monoid a => (b -> a) -> Stream b -> a
+foldMap f = foldl (\a b -> a <> f b) mempty
+{-# INLINE [1] foldMap #-}
