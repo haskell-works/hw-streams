@@ -1,7 +1,7 @@
 cabal-version: 1.12
 
 name:           hw-streams
-version:        0.0.0.8
+version:        0.0.0.9
 synopsis:       Primitive functions and data types
 description:    Primitive functions and data types.
 category:       Data
