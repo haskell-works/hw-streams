@@ -1,31 +1,54 @@
 #!/usr/bin/env bash
 
-STACK_FLAGS="
-"
+CABAL_FLAGS=""
 
 cmd="$1"
 
 shift
 
-case $cmd in
+case "$cmd" in
+  install)
+    cabal new-install \
+      --symlink-bindir=$HOME/.local/bin \
+      -j8 --overwrite-policy=always --disable-documentation \
+      exe:hw-json
+      $CABAL_FLAGS "$@"
+    ;;
+
   build)
-    stack build \
-      --test --no-run-tests --bench --no-run-benchmarks \
-      $STACK_FLAGS "$@"
+    cabal new-build all -j8 \
+      --disable-tests --disable-benchmarks \
+      $CABAL_FLAGS "$@"
     ;;
 
   test)
-    stack test \
-      $STACK_FLAGS "$@"
+    cabal new-test -j8 --enable-tests --disable-documentation \
+      $CABAL_FLAGS "$@"
     ;;
 
   bench)
-    stack bench \
-      $STACK_FLAGS "$@"
+    cabal new-bench -j8 \
+      $CABAL_FLAGS "$@"
     ;;
 
   repl)
-    stack repl \
-      $STACK_FLAGS "$@"
+    cabal new-repl \
+      $CABAL_FLAGS "$@"
+    ;;
+
+  clean)
+    cabal new-clean
+    ;;
+  
+  *)
+    echo "Unrecognised command: $cmd"
+    exit 1
     ;;
 esac
+
+# haskell-ide-engine work-around
+for x in $(find dist-newstyle -name setup-config | grep '/opt/setup-config$' | sed 's|/opt/setup-config$||g'); do
+  ( cd $x
+    ln -fs opt/setup-config setup-config
+  )
+done
