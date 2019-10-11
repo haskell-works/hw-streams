@@ -6,6 +6,7 @@
 module HaskellWorks.Data.Streams.Stream where
 
 import Data.Bool
+import Data.Monoid                    ((<>))
 import HaskellWorks.Data.Streams.Size
 
 import Prelude hiding (drop, foldl, zipWith)
