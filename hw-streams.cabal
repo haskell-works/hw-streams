@@ -105,8 +105,6 @@ test-suite hw-streams-test
   other-modules:        HaskellWorks.Data.Streams.Stream.OpsSpec
                         HaskellWorks.Data.Streams.Vector.StorableSpec
                         Test.Gen
-                        Paths_hw_streams
-  autogen-modules:      Paths_hw_streams
   ghc-options:          -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:        hw-streams
   build-tool-depends:   hspec-discover:hspec-discover
@@ -128,10 +126,8 @@ benchmark bench
   hs-source-dirs:       bench
   build-depends:        hw-streams
   ghc-options:          -Wall -O2 -msse4.2
-  autogen-modules:      Paths_hw_streams
   other-modules:        Baseline.Data.Streams.Vector.Storable
                         Reference.Data.Streams.Vector.Storable
-                        Paths_hw_streams
 
 test-suite doctest
   import:               base, config
