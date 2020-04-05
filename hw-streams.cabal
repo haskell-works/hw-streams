@@ -43,7 +43,6 @@ common hw-prim                    { build-depends: hw-prim                    >=
 common mmap                       { build-depends: mmap                       >= 0.5        && < 0.6    }
 common primitive                  { build-depends: primitive                  >= 0.6.3.0    && < 0.8    }
 common QuickCheck                 { build-depends: QuickCheck                 >= 2.10       && < 2.15   }
-common semigroups                 { build-depends: semigroups                 >= 0.8.4      && < 0.20   }
 common transformers               { build-depends: transformers               >= 0.4        && < 0.6    }
 common vector                     { build-depends: vector                     >= 0.12       && < 0.13   }
 
@@ -64,7 +63,6 @@ library
                       , hw-prim
                       , mmap
                       , primitive
-                      , semigroups
                       , transformers
                       , vector
   exposed-modules:      HaskellWorks.Data.Streams.ByteString
@@ -96,7 +94,6 @@ test-suite hw-streams-test
                       , hw-prim
                       , mmap
                       , primitive
-                      , semigroups
                       , transformers
                       , vector
   type:                 exitcode-stdio-1.0
@@ -118,7 +115,6 @@ benchmark bench
                       , hw-prim
                       , mmap
                       , primitive
-                      , semigroups
                       , transformers
                       , vector
   type:                 exitcode-stdio-1.0

@@ -5,7 +5,6 @@ module HaskellWorks.Data.Streams.Stream.OpsSpec
   ( spec
   ) where
 
-import Data.Semigroup              ((<>))
 import Data.Word
 import HaskellWorks.Hspec.Hedgehog
 import Hedgehog
