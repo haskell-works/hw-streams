@@ -15,7 +15,7 @@ import qualified Hedgehog.Gen                              as G
 import qualified Hedgehog.Range                            as R
 import qualified Test.Gen                                  as G
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do"        -}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.Stream.Vector.StorableSpec" $ do
