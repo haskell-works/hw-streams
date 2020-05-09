@@ -14,7 +14,7 @@ import qualified Data.Vector.Storable                      as DVS
 import qualified HaskellWorks.Data.Streams.Stream.Ops      as S
 import qualified HaskellWorks.Data.Streams.Vector.Storable as SDVS
 
-{-# ANN module ("HLint: ignore Redundant do" :: String) #-}
+{- HLINT ignore "Redundant do"        -}
 
 spec :: Spec
 spec = describe "HaskellWorks.Data.Stream.Vector.StorableSpec" $ do
