@@ -1,3 +1,0 @@
-primitive
-vector
-transformers
