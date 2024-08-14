@@ -14,7 +14,7 @@ import qualified HaskellWorks.Data.Bits.BitWise   as BW
 import qualified HaskellWorks.Data.Streams.Stream as HW
 
 ltWord :: Word64 -> Word64 -> Word64
-ltWord (W64# a#) (W64# b#) = fromIntegral (I64# (ltWord# a# b#))
+ltWord (W64# a#) (W64# b#) = fromIntegral (I# (ltWord64# a# b#))
 {-# INLINE ltWord #-}
 
 comp :: Stream Word64 -> Stream Word64
